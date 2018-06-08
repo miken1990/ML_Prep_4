@@ -29,7 +29,7 @@ class Logger(object):
         self.list_out_streams.append(open(file_str, "a"))
 
     def write(self, message):
-        [stream.write(message) for stream in self.list_out_streams]
+        [stream.write(message + '\n') for stream in self.list_out_streams]
 
     def flush(self):
         #this flush method is needed for python 3 compatibility.
@@ -45,7 +45,7 @@ class Modeling:
     logger = None
 
     def __init__(self, file_str=None, print_modeling: bool=False):
-        file_str = strftime("%y_%m_%d_%H_%M_%S") + ".txt" if file_str is None else file_str
+        file_str = "Modeling_" + strftime("%y_%m_%d_%H_%M_%S") + ".txt" if file_str is None else file_str
         self.logger = Logger(file_str, print_modeling)
 
     def title(self, msg, decorator='*', decorator_len=80):
@@ -78,9 +78,9 @@ class Modeling:
 
     def allocate_rand_search_classifiers(self, scoring: Consts.ScoreType) -> [RandomizedSearchCV]:
         list_random_search = []  # type: [RandomizedSearchCV]
-        n_iter = 30
+        n_iter = 1
         n_jobs = 2
-        cv = 10
+        cv = 3
         score = scoring.value
 
         random_state = Consts.listRandomStates[0]
@@ -126,19 +126,19 @@ class Modeling:
         #     )
         # )
 
-        self.log("Creating a KNN")
-        clf = KNeighborsClassifier()
-        list_random_search.append(
-            RandomizedSearchCV(
-                estimator=clf,
-                param_distributions=Consts.RandomGrid.knn_grid,
-                n_iter=n_iter,
-                scoring=score,
-                n_jobs=n_jobs,
-                cv=cv,
-                random_state=random_state
-            )
-        )
+        # self.log("Creating a KNN")
+        # clf = KNeighborsClassifier()
+        # list_random_search.append(
+        #     RandomizedSearchCV(
+        #         estimator=clf,
+        #         param_distributions=Consts.RandomGrid.knn_grid,
+        #         n_iter=n_iter,
+        #         scoring=score,
+        #         n_jobs=n_jobs,
+        #         cv=cv,
+        #         random_state=random_state
+        #     )
+        # )
 
         return list_random_search
 
@@ -190,9 +190,13 @@ class Modeling:
             axis=0), np.concatenate(
             (self.dict_dfs_np[Consts.FileSubNames.Y_TRAIN], self.dict_dfs_np[Consts.FileSubNames.Y_VAL]), axis=0)
 
-    def predict_the_winner(self, estimator, test_data, dir: Consts.EX3DirNames) -> None:
+    @staticmethod
+    def predict_the_winner(estimator, test_data, wanted_dir: Consts.EX3DirNames) -> None:
         """
         save to a file!
+        :param test_data: 
+        :param wanted_dir: 
+        :return: 
         :param estimator:
         :return: the name of the party with the majority of votes
         """
@@ -201,13 +205,14 @@ class Modeling:
         y = y_pred.astype(np.int32)
         counts = np.bincount(y)
         winner = Consts.MAP_NUMERIC_TO_VOTE[np.argmax(counts)]
-        file_path = dir.value + Consts.EX3FilNames.WINNER.value
+        file_path = wanted_dir.value + Consts.EX3FilNames.WINNER.value
         with open(file_path, "w") as file:
             file.write(winner)
 
         return y_pred
 
-    def _predict_votes_aux(self, estimator, test_data):
+    @staticmethod
+    def _predict_votes_aux(estimator, test_data):
         test_data_copy = test_data.copy()
         y_pred = estimator.predict(test_data_copy)
         test_data_copy[Consts.VOTE_STR] = pd.Series(y_pred)
@@ -221,11 +226,11 @@ class Modeling:
 
         return y_pred, result
 
-    def predict_most_likely_voters(self, estimator, test_data, test_label, dir: Consts.EX3DirNames):
+    def predict_most_likely_voters(self, estimator, test_data, test_label, wanted_dir: Consts.EX3DirNames):
         y_pred, result = self._predict_votes_aux(estimator, test_data)
 
         # save predictions to file
-        file_path = dir.value + Consts.EX3FilNames.MOST_LIKELY_PARTY.value
+        file_path = wanted_dir.value + Consts.EX3FilNames.MOST_LIKELY_PARTY.value
         with open(file_path, "w") as file:
             for i in range(1, 12):
                 result[i] = [(int(item)) for item in result[i]]
