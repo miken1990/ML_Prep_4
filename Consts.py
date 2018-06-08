@@ -258,6 +258,7 @@ class ClassifierTypes(Enum):
     SVM = "svm"
     RANDOM_FOREST = "random_forest"
     KNN = 'knn'
+    NAIVE_BAYES = 'naive bayes'
 
 
 # **********************************************************************************************************************#

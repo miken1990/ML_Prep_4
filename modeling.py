@@ -18,27 +18,43 @@ import Consts
 
 # **********************************************************************************************************************#
 
+class Logger(object):
+    list_out_streams = list()
+
+    def __init__(self, file_str=None, print_modeling: bool=False):
+        if not print_modeling:
+            return
+
+        self.list_out_streams.append(sys.stdout)
+        self.list_out_streams.append(open(file_str, "a"))
+
+    def write(self, message):
+        [stream.write(message) for stream in self.list_out_streams]
+
+    def flush(self):
+        #this flush method is needed for python 3 compatibility.
+        #this handles the flush command by doing nothing.
+        #you might want to specify some extra behavior here.
+        pass
+
+# **********************************************************************************************************************#
+
 class Modeling:
     dict_dfs_np = {d: None for d in list(Consts.FileSubNames)}
     dict_dfs_pd = {d: None for d in list(Consts.FileSubNames)}
-    do_print = True
     logger = None
 
     def __init__(self, file_str=None, print_modeling: bool=False):
-        self.do_print = print_modeling
-
-        if self.do_print and file_str is not None:
-            sys.stdout = open(file_str, 'w')
+        file_str = strftime("%y_%m_%d_%H_%M_%S") + ".txt" if file_str is None else file_str
+        self.logger = Logger(file_str, print_modeling)
 
     def title(self, msg, decorator='*', decorator_len=80):
-        if self.do_print:
-            print(decorator * decorator_len)
-            print('{}: {}'.format(strftime("%c"), msg))
-            print(decorator * decorator_len)
+        self.logger.write(decorator * decorator_len)
+        self.logger.write('{}: {}'.format(strftime("%c"), msg))
+        self.logger.write(decorator * decorator_len)
 
     def log(self, msg):
-        if self.do_print:
-            print('{}: {}'.format(strftime("%c"), msg))
+        self.logger.write('{}: {}'.format(strftime("%c"), msg))
 
     def load_data(self, base: Consts.FileNames, set: int) -> None:
         """
@@ -348,7 +364,6 @@ def plot_learning_curve(estimator, title, X, y, ylim=None, cv=None,
 def ex_3(use_the_same_model_for_all_tasks: bool, use_multi_models_for_tasks: bool, show_learning_curves: bool,
          view_decision_tree: bool, print_ex3: bool) -> None:
 
-    redirection_file = strftime("%y_%m_%d_%H_%M_%S") + ".txt"
     time_begining = datetime.datetime.now()
     print(time_begining.time())
 
