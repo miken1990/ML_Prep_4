@@ -4,6 +4,7 @@ from sklearn.metrics import make_scorer, confusion_matrix, f1_score
 
 inf = 10000
 maxLeafNodes = 20
+maxClustersNum = 11
 INDEX_COL = 'index_col'
 VOTE_STR = 'Vote'
 VOTE_INT = 'Vote_int'
@@ -311,3 +312,6 @@ class FileNames(Enum):
     FILTERED_AND_SCALED = DirNames.FILTERED_AND_SCALED.value + per_file
     SUMMARY = DirNames.SUMMARY.value + per_file
 
+class ClusteringPerformanceMetrics(Enum):
+    ADJUSTED_RAND_INDEX = "Adjusted Rand Index"
+    MUTUAL_INFORMATION = "Mutual Information"
