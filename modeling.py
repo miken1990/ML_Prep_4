@@ -18,6 +18,7 @@ import Consts
 
 # **********************************************************************************************************************#
 
+
 class Logger(object):
     list_out_streams = list()
 
@@ -112,33 +113,34 @@ class Modeling:
                 random_state=random_state
             )
         )
-        # self.log("Creating a SVM")
-        # clf = svm.SVC()
-        # list_random_search.append(
-        #     RandomizedSearchCV(
-        #         estimator=clf,
-        #         param_distributions=Consts.RandomGrid.svc_grid,
-        #         n_iter=n_iter,
-        #         scoring=score,
-        #         n_jobs=n_jobs,
-        #         cv=cv,
-        #         random_state=random_state
-        #     )
-        # )
 
-        # self.log("Creating a KNN")
-        # clf = KNeighborsClassifier()
-        # list_random_search.append(
-        #     RandomizedSearchCV(
-        #         estimator=clf,
-        #         param_distributions=Consts.RandomGrid.knn_grid,
-        #         n_iter=n_iter,
-        #         scoring=score,
-        #         n_jobs=n_jobs,
-        #         cv=cv,
-        #         random_state=random_state
-        #     )
-        # )
+        self.log("Creating a SVM")
+        clf = svm.SVC()
+        list_random_search.append(
+            RandomizedSearchCV(
+                estimator=clf,
+                param_distributions=Consts.RandomGrid.svc_grid,
+                n_iter=n_iter,
+                scoring=score,
+                n_jobs=n_jobs,
+                cv=cv,
+                random_state=random_state
+            )
+        )
+
+        self.log("Creating a KNN")
+        clf = KNeighborsClassifier()
+        list_random_search.append(
+            RandomizedSearchCV(
+                estimator=clf,
+                param_distributions=Consts.RandomGrid.knn_grid,
+                n_iter=n_iter,
+                scoring=score,
+                n_jobs=n_jobs,
+                cv=cv,
+                random_state=random_state
+            )
+        )
 
         return list_random_search
 

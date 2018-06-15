@@ -1,5 +1,9 @@
+from sklearn.naive_bayes import GaussianNB
+
 import Consts
 import pandas as pd
+
+from modeling import Modeling
 
 
 class Party:
@@ -47,5 +51,51 @@ def is_a_coalition(list_parties: [int]) -> bool:
         sum += dict_parties[party].voters_percentage
 
     return sum >= 0.51
+
+
+
+class ImportantFeatures(Modeling):
+    gnb = None
+
+    def __init__(self):
+        super().__init__()
+        use_set = 1
+        self.load_data(Consts.FileNames.FILTERED_AND_SCALED, use_set)
+        self.gnb = GaussianNB()
+
+    def fit_train(self):
+        self.gnb.fit(self.dict_dfs_pd[Consts.FileSubNames.X_TRAIN], self.dict_dfs_pd[Consts.FileSubNames.Y_TRAIN])
+
+    def fit_train_and_val(self):
+        pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
