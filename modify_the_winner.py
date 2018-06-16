@@ -1,4 +1,3 @@
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import GaussianNB
 
 import Consts
@@ -10,6 +9,8 @@ from pandas import read_csv
 from time import strftime
 
 factor = -0.5
+
+
 class ModifyTheWinner:
     dict_dfs_pd = {d: None for d in list(Consts.FileSubNames)}
     logger = None

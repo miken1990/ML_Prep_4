@@ -1,4 +1,5 @@
 import os
+import sys
 from time import strftime
 
 import pandas as pd
@@ -6,7 +7,31 @@ from pandas import read_csv
 from sklearn.naive_bayes import GaussianNB
 
 import Consts
-from modeling import Logger
+
+
+# **********************************************************************************************************************#
+
+
+class Logger(object):
+    list_out_streams = list()
+
+    def __init__(self, file_str=None, print_modeling: bool=False):
+        if not print_modeling:
+            return
+
+        self.list_out_streams.append(sys.stdout)
+        self.list_out_streams.append(open(file_str, "a"))
+
+    def write(self, message):
+        [stream.write(message + '\n') for stream in self.list_out_streams]
+
+    def flush(self):
+        #this flush method is needed for python 3 compatibility.
+        #this handles the flush command by doing nothing.
+        #you might want to specify some extra behavior here.
+        pass
+
+# **********************************************************************************************************************#
 
 
 class ImportantFeatures:
@@ -33,11 +58,6 @@ class ImportantFeatures:
         self.logger.write('{}: {}'.format(strftime("%c"), msg))
 
     def load_data(self, base: Consts.FileNames, set_num: int) -> None:
-        """
-        this method will load ready to use data for the training, validating, and testing sets.
-        this implements stages 1, 3 and part of 6 in the assignment.
-        :return:
-        """
         self.title(f"Loading the data from {base}")
         # load train features and labels
         for d in list(Consts.FileSubNames):
