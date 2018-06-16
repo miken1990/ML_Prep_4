@@ -1,3 +1,6 @@
+import os
+from enum import Enum
+
 from sklearn.naive_bayes import GaussianNB
 
 import Consts
@@ -26,7 +29,7 @@ class Party:
         msg += f"Voters percentage:  {self.voters_percentage}\n"
         msg += "Strongest Features:  {}\n".format(",".join(self.strongest_features))
 
-        print(msg)
+        self.log(msg)
 
 
 df = pd.read_csv(Consts.FileNames.RAW_FILE_PATH.value)
@@ -37,65 +40,15 @@ for party in Consts.MAP_VOTE_TO_NUMERIC.keys():
     amount_of_voters = df[Consts.VOTE_STR][df[Consts.VOTE_STR] == party].count()
     voters_percentage = amount_of_voters / df.shape[0]
     id = Consts.MAP_VOTE_TO_NUMERIC[party]
-    dict_parties[party] = Party(name, amount_of_voters, voters_percentage)
-
-[party.report() for party in dict_parties.values()]
+    dict_parties[id] = Party(name, id, amount_of_voters, voters_percentage)
 
 
 def is_a_coalition(list_parties: [int]) -> bool:
     if len(list_parties) == 0:
         return False
 
-    sum = 0
+    _sum = 0
     for party in list_parties:
-        sum += dict_parties[party].voters_percentage
+        _sum += dict_parties[party].voters_percentage
 
-    return sum >= 0.51
-
-
-
-class ImportantFeatures(Modeling):
-    gnb = None
-
-    def __init__(self):
-        super().__init__()
-        use_set = 1
-        self.load_data(Consts.FileNames.FILTERED_AND_SCALED, use_set)
-        self.gnb = GaussianNB()
-
-    def fit_train(self):
-        self.gnb.fit(self.dict_dfs_pd[Consts.FileSubNames.X_TRAIN], self.dict_dfs_pd[Consts.FileSubNames.Y_TRAIN])
-
-    def fit_train_and_val(self):
-        pass
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    return _sum >= 0.51

@@ -325,3 +325,12 @@ class ClusteringPerformanceMetrics(Enum):
     FOWLKES_MALLOWS_SCORE = "Fowlkes-Mallows scores"
     SILHOUTTE_COEFF = "Silhouette Coefficient"
     CALINSKI_HARABAZ_INDEX = "Calinski-Harabaz Index"
+
+class EX4DirNames(Enum):
+    BASE = "Ex4Data"
+    NAIVE_BAYES = "Ex4Data/NaiveBayes"
+
+
+class EX4FileNames(Enum):
+    THETA = '/theta.csv'
+    SIGMA = '/sigma.csv'
