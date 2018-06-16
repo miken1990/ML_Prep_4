@@ -1,6 +1,6 @@
 import os
 import sys
-from time import time, strftime
+from time import strftime
 from typing import List
 import datetime
 import matplotlib.pyplot as plt
@@ -9,6 +9,7 @@ import pandas as pd
 from pandas import read_csv
 from sklearn import metrics, svm
 from sklearn.ensemble import RandomForestClassifier
+
 from sklearn.model_selection import RandomizedSearchCV, learning_curve
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.neighbors import KNeighborsClassifier

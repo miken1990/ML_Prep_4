@@ -23,6 +23,17 @@ setSelectedFeatures = {
     INDEX_COL
 }
 
+class SelectedFeatures(Enum):
+    Number_of_valued_Kneset_members = 'Number_of_valued_Kneset_members'
+    Yearly_IncomeK = 'Yearly_IncomeK'
+    Overall_happiness_score = 'Overall_happiness_score'
+    Avg_Satisfaction_with_previous_vote = 'Avg_Satisfaction_with_previous_vote'
+    Most_Important_Issue = 'Most_Important_Issue'
+    Will_vote_only_large_party = 'Will_vote_only_large_party'
+    Garden_sqr_meter_per_person_in_residancy_area = 'Garden_sqr_meter_per_person_in_residancy_area'
+    Weighted_education_rank = 'Weighted_education_rank'
+
+
 _listSymbolicColumns = [
     'Most_Important_Issue',
     'Main_transportation',
