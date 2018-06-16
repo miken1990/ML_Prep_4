@@ -3,8 +3,10 @@ import numpy as np
 from sklearn.metrics import make_scorer, confusion_matrix, f1_score
 
 inf = 10000
+numOfParties = 11
+numOfVoters = 10000
 maxLeafNodes = 20
-maxClustersNum = 11
+maxClustersNum = 14
 INDEX_COL = 'index_col'
 VOTE_STR = 'Vote'
 VOTE_INT = 'Vote_int'
@@ -286,6 +288,7 @@ class DirNames(Enum):
     FILTERED_AND_NUMERIC_NAN = "datasets/{}/filtered_and_numeric_nan"
     FILTERED_AND_NUMERIC_NONAN = "datasets/{}/filtered_and_numeric_nonan"
     FILTERED_AND_SCALED = "datasets/{}/filtered_and_scaled"
+    SCALED = "datasets/{}/scaled"
     SUMMARY = "datasets/{}/summary"
 
 class EX3DirNames(Enum):
@@ -310,8 +313,15 @@ class FileNames(Enum):
     FILTERED_AND_NUMERIC_NAN = DirNames.FILTERED_AND_NUMERIC_NAN.value + per_file
     FILTERED_AND_NUMERIC_NONAN = DirNames.FILTERED_AND_NUMERIC_NONAN.value + per_file
     FILTERED_AND_SCALED = DirNames.FILTERED_AND_SCALED.value + per_file
+    SCALED = DirNames.SCALED.value + per_file
     SUMMARY = DirNames.SUMMARY.value + per_file
 
 class ClusteringPerformanceMetrics(Enum):
     ADJUSTED_RAND_INDEX = "Adjusted Rand Index"
     MUTUAL_INFORMATION = "Mutual Information"
+    HOMOGENEITY = "Homogeneity"
+    COMPLETENESS = "Completeness"
+    V_MEASURE = "V-measure"
+    FOWLKES_MALLOWS_SCORE = "Fowlkes-Mallows scores"
+    SILHOUTTE_COEFF = "Silhouette Coefficient"
+    CALINSKI_HARABAZ_INDEX = "Calinski-Harabaz Index"
