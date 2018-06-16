@@ -49,7 +49,7 @@ class Clustering:
         return read_csv(filePath, header=0, keep_default_na=True)
 
     def cluster_with_k(self, k):
-        """Performs clustering on the training data and measures performance according to 6 different evaluation methods
+        """Performs clustering on the training data and measures performance according to 3 different evaluation methods
         :param k: number of clusters
         :return: None
         """
@@ -85,7 +85,7 @@ class Clustering:
 
 
     def cluster_perform(self):
-        """Performs clustering on the training data with increasing k (between 2 and 13) and stores performance of 6
+        """Performs clustering on the training data with increasing k (between 2 and 13) and stores performance of 3
         different evaluation methods for every k
         :return: None
         """
@@ -195,6 +195,4 @@ if __name__ == '__main__':
     c.load_data(Consts.FileNames.FILTERED_AND_SCALED, dataset)
     c.cluster_perform()
     c.plot_metric_score()
-    c.find_coalition(2)
-
-
+    c.find_coalition(1)
